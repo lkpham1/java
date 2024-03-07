@@ -1,0 +1,84 @@
+public class Device {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		
+		
+
+	}
+	private static int previousId = 0;
+	private int id;
+	private String sku; 
+	private String name; 
+	private boolean statusOfCheckOut;
+	
+	
+	
+	public Device (String sku, String name, boolean statusOfCheckOut)
+	{
+		this.id = ++previousId;
+		this.sku = sku;
+		this.name = name;
+		this.statusOfCheckOut = statusOfCheckOut;
+	}
+	
+	
+	public void setSKU ( String sku )
+	{
+		this.sku = sku;
+	}
+	
+	public String getSKU()
+	{
+		return sku;
+	}
+	
+	public void setName ( String name)
+	{
+		this.name = name;
+	}
+	
+	public String getName ()
+	{
+		return name;
+	}
+	
+	public int getId ()
+	{
+		return id;
+	}
+	
+	public boolean statusOfCheckOut()
+	{
+		return statusOfCheckOut;
+	}
+	
+	public void checkOut()
+	{
+		statusOfCheckOut = true;
+	}
+	
+	public void checkIn()
+	{
+		statusOfCheckOut = false;
+	}
+	
+	public String getStatus()
+	{
+		if (statusOfCheckOut == true)
+		{
+			return "Checked Out";
+		}
+		else 
+		{
+			return "Available";
+		}
+
+	}
+	
+
+	
+	
+	
+	
+}
