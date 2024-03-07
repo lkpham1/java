@@ -1,0 +1,396 @@
+import java.util.Scanner;
+import java.util.ArrayList;
+
+public class libraryList{
+	private static ArrayList <Device> devicelibraryList = new ArrayList <>(10);
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		loadSampleData();
+		displayMenu();
+		
+		
+		
+	}
+	
+	
+	
+	
+	public static void loadSampleData ()
+	{
+		devicelibraryList.add(new Device ("6757A", "Apple 9.7-inch iPad Pro", false));
+		devicelibraryList.add(new Device("93P51B", "Amazon Kindle Fire Kids Edition", false));
+		devicelibraryList.add(new Device("10N8C","LeapFrog Epic Learning Tablet", false));
+		devicelibraryList.add(new Device("85U2O","Amazon Kindle Fire HD 8", true));
+		devicelibraryList.add(new Device("91H2D", "HP Envy 8 Note", false));
+	}
+	
+	
+	
+	public static void displayMenu()
+	{
+		Scanner inputDevice = new Scanner (System.in);
+		int input;
+		do {
+		System.out.println("\t\t\tLibrary Device Checkout System");
+		System.out.println("\n1. List Devices by Title");
+		System.out.println("2. Add New Devices");
+		System.out.println("3. Edit Device Information");
+		System.out.println("4. Search by Device Name");
+		System.out.println("5. Check Out Devices");
+		System.out.println("6. Check In Devices");
+		System.out.println("7. Exit");
+		
+		
+		System.out.print("\n\nSelect menu options 1-7: ");
+		input = Integer.parseInt(inputDevice.nextLine());
+		
+		switch (input)
+		{
+		case 1:
+			System.out.println("\n\n\n");
+			listDevices();
+			System.out.println("\n\n\n");
+			break;
+		case 2:
+			System.out.println("\n\n\n");
+			addNewDevices();
+			System.out.println("\n\n\n");
+			break;
+		case 3:
+			System.out.println("\n\n\n");
+			editDevices();
+			System.out.println("\n\n\n");
+			break;
+		case 4:
+			System.out.println("\n\n\n");
+			searchbyDeviceName();
+			System.out.println("\n\n\n");
+			break;
+		case 5:
+			System.out.println("\n\n\n");
+			deviceCheckOut();
+			System.out.println("\n\n\n");
+			break;
+		case 6:
+			System.out.println("\n\n\n");
+			deviceCheckIn();
+			System.out.println("\n\n\n");
+			break;
+		case 7:
+			System.out.print("Good bye!");
+			System.exit(0);
+			break;
+			
+		}
+		} while (input != 7);
+		
+	}
+	
+	public static void continueButton()
+	{
+		Scanner inputDevice = new Scanner(System.in);
+		System.out.println("\n\n\nPress Enter to continue...");
+		inputDevice.nextLine();
+	}
+	
+	
+	
+	
+	
+	
+	public static void listDevices()
+	{
+		Scanner inputDevice = new Scanner (System.in);
+		System.out.println("\t\t\tLibrary Device Checkout System - List\n");
+		System.out.printf("#  %-15s %-30s", "SKU","Name");
+		for (Device a: devicelibraryList)
+		{
+			System.out.println();
+			System.out.printf("%-2d %-15s %-40s %-10s", a.getId(), a.getSKU(), a.getName(), a.getStatus() );
+		}
+
+		continueButton();
+	}
+	
+	
+	
+
+	
+	public static void addNewDevices()
+	{
+		String inputSKU;
+		String inputName;
+		
+		Scanner inputDevice = new Scanner(System.in);
+		System.out.println("\t\tLibrary Device Checkout System - Add New Device");
+		
+		System.out.print("SKU: ");
+		inputSKU = inputDevice.nextLine();
+		System.out.print("Name: ");
+		inputName = inputDevice.nextLine();
+		System.out.printf("\nAdded %s to Catalog", inputName);
+		
+		
+		Device newDevice = new Device(inputSKU, inputName, false);
+		newDevice.setSKU(inputSKU);
+		newDevice.setName(inputName);
+		
+		devicelibraryList.add(newDevice);
+		
+		continueButton();
+		
+	}
+	
+	
+	
+	
+	public static void editDevices ()
+	{
+		Scanner inputDevice = new Scanner(System.in);
+		listDevices();
+		
+		
+		int editNumber = 0;
+		String editSKU;
+		String editName;
+		boolean continueloop = true;
+		
+		
+		do {
+		System.out.printf("Enter Device number to edit (1-%d): ", devicelibraryList.size());
+		try {
+			
+		editNumber = Integer.parseInt(inputDevice.nextLine());
+		
+		
+		if ( editNumber < 1 || editNumber > devicelibraryList.size())
+		{
+			System.out.print("Invalid Number.\n");
+			continueloop = false;
+			
+		}
+		else
+		{
+			Device linetoEdit = devicelibraryList.get(editNumber - 1);
+			
+			System.out.print("\nSKU: ");
+			editSKU = inputDevice.nextLine();
+			System.out.print("Name: ");
+			editName = inputDevice.nextLine();
+			
+			linetoEdit.setSKU(editSKU);
+			linetoEdit.setName(editName);
+			
+			System.out.println("\nDevice information updated.");
+			break;
+		}
+		}
+		catch (NumberFormatException e )
+		{
+			System.out.print("Invalid Input.");
+			continueloop = false;
+		}
+		
+		} while (continueloop == true);
+		
+		
+		continueButton();
+		
+	}
+	
+	
+	
+	public static void searchbyDeviceName()
+	{
+		Scanner inputDevice = new Scanner (System.in);
+		
+		String searchInput;
+		boolean found = true;
+		
+		System.out.println("\t\tLibrary Device Checkout System - Search");
+		
+		System.out.print("\nEnter Device to search for: ");
+		searchInput = inputDevice.nextLine().toLowerCase();
+		
+		System.out.printf("\n\nListings for '%s'\n", searchInput);
+		System.out.printf("#  %-15s %-30s", "SKU","Name");
+		
+		for (Device a : devicelibraryList)
+		{
+			if (a.getName().toLowerCase().contains(searchInput))
+			{
+				if (found == true)
+				{
+				
+					System.out.printf("\n%-2d %-15s %-30s", a.getId(), a.getSKU(), a.getName());
+				}
+					
+			}
+		}	
+		
+		if (found == false)
+        {
+			System.out.print("There is no device contain this word!");
+		}
+		
+			continueButton();
+			
+		
+	}
+	
+	
+	
+	
+	public static void listAvailableDevices ()
+	{
+		System.out.printf("#  %-15s %-30s", "SKU","Name");
+		int count = 1;
+		
+		for (Device a: devicelibraryList)
+		{
+			if (!a.statusOfCheckOut())
+			{
+				System.out.println();
+				System.out.printf("%-2d %-15s %-30s", a.getId(), a.getSKU(), a.getName());
+				count ++;
+			}
+				
+		}
+		
+	}
+	
+	
+	
+	
+	public static void listCheckOutDevices ()
+	{
+		System.out.printf("#  %-15s %-30s", "SKU","Name");
+		int count = 1;
+		
+		for (Device a: devicelibraryList)
+		{
+			if (a.statusOfCheckOut())
+			{
+				System.out.println();
+				System.out.printf("%-2d %-15s %-30s", a.getId(), a.getSKU(), a.getName());
+				count++;
+			}
+		}
+		
+	}
+	
+	
+	
+	public static void deviceCheckOut ()
+	{
+		Scanner inputDevice = new Scanner (System.in);
+		System.out.println("\t\tLibrary Device Checkout System - Check Out Device");
+		System.out.println("\nAvailable Devices");
+		listAvailableDevices();
+		
+		int checkoutInput;
+		boolean continueloop = true;
+		
+		do {
+			System.out.print("\n\nEnter device number: ");
+			try 
+			{
+				checkoutInput = Integer.parseInt(inputDevice.nextLine());
+				if (checkoutInput < 1 || checkoutInput > devicelibraryList.size())
+				{
+					System.out.print("Invalid Number");
+					continueloop = false;
+				}
+				else 
+				{
+					Device checkoutDevice = devicelibraryList.get(checkoutInput-1);
+					
+					if (checkoutDevice.statusOfCheckOut())
+					{
+						System.out.print("This device is already checked out.");
+						continueloop = false;
+						
+					}
+					else
+					{
+						checkoutDevice.checkOut();
+						System.out.print("Device Checked Out.");
+						break;
+					}
+				}
+				
+			}
+			catch (NumberFormatException e)
+			{
+				System.out.print("Invalid Input");
+				continue;
+			}
+			
+			
+		
+		} while (continueloop == true);
+		
+		
+		
+		continueButton();
+		
+		
+	}
+	
+	public static void deviceCheckIn()
+	{
+		Scanner inputDevice = new Scanner (System.in);
+		System.out.println("\t\tLibrary Device Checkout System - Check In Device");
+		System.out.println("\nCheck Out Devices");
+		System.out.println();
+		listCheckOutDevices();
+		
+		int checkinInput;
+		boolean continueloop = true;
+		
+		do {
+			System.out.print("\n\nEnter device number: ");
+			try 
+			{
+				checkinInput = Integer.parseInt(inputDevice.nextLine());
+				if (checkinInput < 1 || checkinInput > devicelibraryList.size())
+				{
+					System.out.print("Invalid Number");
+					continueloop = false;
+				}
+				else 
+				{
+					Device checkoutDevice = devicelibraryList.get(checkinInput-1);
+					
+					if (!checkoutDevice.statusOfCheckOut())
+					{
+						System.out.print("This device is not checked out.");
+						continueloop = false;
+						
+					}
+					else
+					{
+						checkoutDevice.checkIn();
+						System.out.print("Device Checked In.");
+						break;
+					}
+				}
+			}
+			catch (NumberFormatException e)
+			{
+				System.out.print("Invalid Input");
+				break;
+			}
+			
+		
+		} while (continueloop == true);
+		
+         
+		
+		continueButton();
+		
+		
+
+	}
+
+}
